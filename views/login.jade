@@ -1,0 +1,45 @@
+extends layout
+
+block content
+
+
+    div.m-4.d-flex.justify-content-center
+        form.p-5.rounded.shadow(method="post", action="/login", autocomplete="off")
+            div
+                h2.text-center.p-2 AACR - Feedback Site
+            h3.text-center.display-6 LOGIN
+
+            if(typeof(error)!=='undefined')
+                div.alert.alert-danger(role="alert")
+                    p.m-2.fw-bolder.fs-5 Login failed!
+                    ul
+                        li #{error} 
+            
+            if(typeof(errors)!=='undefined')
+                div.alert.alert-danger(role="alert")
+                    p.m-2.fw-bolder.fs-5 Login failed!
+                    ul
+                        for each in errors
+                            li #{each.msg}
+            
+                
+ 
+            label Email
+            input.form-control(type="email", 
+                               name="email", 
+                               autocomplete="off",
+                               required="true",
+                               placeholder="Email")
+            br
+            label Password 
+            input.form-control(type="password", 
+                               name="password", 
+                               autocomplete="off",
+                               required="true",
+                               placeholder="Password")
+            br
+            div.d-grid.mx-auto
+                button.btn.btn-primary(type="submit") LOGIN
+       
+            div.text-center.p-3
+                a.text-center(href="/signup") Create an account

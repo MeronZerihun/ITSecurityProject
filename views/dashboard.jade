@@ -1,0 +1,44 @@
+extends layout 
+
+block content
+
+    
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
+        div.container-fluid
+            if(username)
+                a.navbar-brand.fw-bold Welcome to AACR Web page, #{username}
+            button.navbar-toggler(type="button", data-bs-toggle="collapse", data-bs-target="#navbarText", aria-controls="navbarText", aria-expanded="false", aria-label="Toggle navigation")
+                span.navbar-toggler-icon
+
+            div.collapse.navbar-collapse.justify-content-center(id="navbarText")
+                ul.navbar-nav.mb-2.mb-lg-0
+                    li.nav-item
+                        a.nav-link.active.fw-bolder(aria-current="page" href="/") Home
+                    li.nav-item
+                        a.nav-link.fw-bolder(href="/feedback") Submit a feedback
+                    
+            a.btn.btn-danger.d-flex(href="/logout") Logout
+        
+    if(feedbacks)
+        div.container.mt-5   
+            each feedback in feedbacks  
+                - c_feedback = feedback._id 
+                div.card.mt-3(style="width: 100%" onclick = "edit('#{feedback._id}')")
+                    div.card-body 
+                        div.row
+                            div.col-10
+                                h5.card-title #{feedback.complaint}
+                                div.card-text 
+                                    p #{feedback.created_at}
+                            if(feedback.file_lnk)
+                                div.col
+                                    a.btn.btn-outline-success.px-3(href = '#{feedback.file_lnk}') View PDF
+    else 
+        div.container.mt-5 
+            h5.text-center No feedback to show
+
+    script(type="text/javascript").
+        function edit(id){
+                //- alert(id);
+                window.location.href = `/${id}/edit`;
+        }

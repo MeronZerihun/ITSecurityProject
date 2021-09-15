@@ -1,0 +1,67 @@
+extends layout
+
+block content
+
+    div.m-4.d-flex.justify-content-center
+        form.p-5.rounded.shadow(action="/signup", method="post", autocomplete="off")
+            div
+                h2.text-center.p-2 AACR - Feedback Site
+            h3.text-center.display-6 SIGN UP
+
+            if(typeof(error)!=='undefined')
+                div.alert.alert-danger(role="alert")
+                    p.m-2.fw-bolder.fs-5 Sign up failed!
+                    ul
+                        li #{error} 
+            
+            if(typeof(errors)!=='undefined')
+                div.alert.alert-danger(role="alert")
+                    p.m-2.fw-bolder.fs-5 Sign up failed!
+                    ul
+                        for each in errors
+                            li #{each.msg}
+            
+            label First Name
+            input.form-control(type="text", 
+                               name="fname", 
+                               autocomplete="off",
+                               required="true",
+                               placeholder="First Name")
+            br
+            label Last Name
+            input.form-control(type="text", 
+                               name="lname", 
+                               autocomplete="off",
+                               required="true",
+                               placeholder="Last Name")
+            br
+            label Email
+            input.form-control(type="email", 
+                               name="email", 
+                               autocomplete="off",
+                               required="true",
+                               placeholder="Email")
+            br
+            label Password 
+            input.form-control(type="password", 
+                               name="p_password", 
+                               autocomplete="off",
+                               required="true",
+                               placeholder="Password")
+            br
+            label Confirm Password 
+            input.form-control(type="password", 
+                               name="re_password", 
+                               autocomplete="off",
+                               required="true",
+                               placeholder="Confirm Password")
+            br
+            div.d-grid.mx-auto
+                button.btn.btn-primary(type="submit") SIGN UP
+       
+            div.text-center.p-3
+                a.text-center(href="/login") Already have an account?
+       
+
+
+         

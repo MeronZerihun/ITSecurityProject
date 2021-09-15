@@ -1,0 +1,81 @@
+extends layout 
+
+block content
+
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
+        div.container-fluid
+            if(username)
+                a.navbar-brand Welcome #{username}
+            button.navbar-toggler(type="button", data-bs-toggle="collapse", data-bs-target="#navbarText", aria-controls="navbarText", aria-expanded="false", aria-label="Toggle navigation")
+                span.navbar-toggler-icon
+
+            div.collapse.navbar-collapse.justify-content-center(id="navbarText")
+                ul.navbar-nav.mb-2.mb-lg-0
+                    li.nav-item
+                        a.nav-link(href="/") Home
+                    li.nav-item
+                        a.nav-link.active.fw-bolder(aria-current="page" href="/feedback") Submit a feedback
+                    
+            a.btn.btn-danger.d-flex(href="/logout") Logout
+    
+
+    div.container.justify-content-center.mt-5(style="width: 70%;")
+        h1.text-center.font-weight-bold AACR - Feedback Page
+        hr
+
+        if(typeof(error)!=='undefined')
+                div.alert.alert-danger(role="alert")
+                    p.m-2.fw-bolder.fs-5 An error has occurred. 
+                    ul
+                        li #{error} 
+
+        if(typeof(errors)!=='undefined')
+                div.alert.alert-danger(role="alert")
+                    p.m-2.fw-bolder.fs-5 An error has occurred. 
+                    ul
+                        for each in errors
+                            li #{each.msg}
+
+        form.mt-5.p-5.rounded.shadow(method="post" action="/feedback" autocomplete="off" enctype="multipart/form-data")
+            h6 Please submit your feedback below: 
+            br
+
+            label Enter your complaint
+            textarea.form-control(type="text",
+                               name="complaint", 
+                               autocomplete="off",
+                               required="true",
+                               placeholder="Type in your complaint" )
+            br
+
+            label Attach file (Optional)
+            input.form-control(type="file", 
+                               name="file", accept="application/pdf")
+            br
+
+            div.text-center.d-grid.gap-2.col-2.mx-auto
+                button.btn.btn-success(type="submit") SUBMIT
+            
+    div.modal( id="success-dialog" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false")
+        div.modal-dialog
+            div.modal-content
+                div.modal-header
+                    h4.modal-title Congratulations!
+     
+                div.text-center.modal-body
+                    img(width=120 height=120 src="images/success.png")
+                    h4.m-4 Your feedback has been submitted successfully!
+      
+                div.modal-footer
+                    a.btn.btn-success.px-5(href="/dashboard") OK 
+    
+    if(success)   
+        script(type = "text/javascript").
+            window.onload = function() {
+                    $("#success-dialog").modal('show');
+                    success = false;
+                }     
+    
+
+            
+    
