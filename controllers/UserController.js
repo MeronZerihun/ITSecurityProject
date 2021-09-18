@@ -20,7 +20,7 @@ var getUserDashboard = function (req, res, next) {
     } else {
       if (user["role"] === "admin") {
         return res.redirect("/admin");
-      } else if (user["role"] === "user") {
+      } else if (user["role"] === "user" && user["status"] === "active") {
         return res.redirect("/dashboard");
       }
     }
@@ -70,7 +70,7 @@ exports.renderUserDashboardPage = function (req, res, next) {
         message: "Not found",
       });
     } else {
-      if (user["role"] === "user") {
+      if (user["role"] === "user" && user["status"] === "active") {
         return res.render("dashboard", {
           username: user["firstName"] + " " + user["lastName"],
         });
@@ -116,7 +116,7 @@ exports.renderFeedbackPage = function (req, res, next) {
         message: "Not found",
       });
     } else {
-      if (user["role"] === "user") {
+      if (user["role"] === "user" && user["status"] === "active") {
         return res.render("add-feedback");
       } else {
         resp.status(403);
@@ -139,7 +139,7 @@ exports.renderEditFeedbackPage = function (req, res, next) {
         message: "Not found",
       });
     } else {
-      if (user["role"] === "user") {
+      if (user["role"] === "user" && user["status"] === "active") {
         // console.log(req.params.id);
         return res.render("edit-feedback");
       } else {
@@ -155,32 +155,35 @@ exports.renderEditFeedbackPage = function (req, res, next) {
 
 exports.loginUser = function (req, resp, next) {
   var login_user = req.body;
-  User.find({ email: login_user.email }, function (err, user) {
-    if (err)
-      return res.render("login", {
-        error: "Sign in failed. Please try again.",
-      });
-    else if (user.length) {
-      bcrypt.compare(
-        login_user.password,
-        user[0].password,
-        function (err, res) {
-          if (!res)
-            return resp.render("login", {
-              error: "Invalid credentials. Please try again.",
-            });
-          else {
-            req.session.user_id = user[0]._id;
-            getUserDashboard(req, resp, next);
+  User.find(
+    { email: login_user.email, status: "active" },
+    function (err, user) {
+      if (err)
+        return res.render("login", {
+          error: "Sign in failed. Please try again.",
+        });
+      else if (user.length) {
+        bcrypt.compare(
+          login_user.password,
+          user[0].password,
+          function (err, res) {
+            if (!res)
+              return resp.render("login", {
+                error: "Invalid credentials. Please try again.",
+              });
+            else {
+              req.session.user_id = user[0]._id;
+              getUserDashboard(req, resp, next);
+            }
           }
-        }
-      );
-    } else {
-      return resp.render("login", {
-        error: "Invalid credentials. Please try again.",
-      });
+        );
+      } else {
+        return resp.render("login", {
+          error: "Invalid credentials. Please try again.",
+        });
+      }
     }
-  });
+  );
 };
 
 exports.changeUserStatus = function (req, res, next) {

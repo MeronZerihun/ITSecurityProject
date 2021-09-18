@@ -7,7 +7,7 @@ exports.submitFeedback = function (req, resp, next) {
 
   if (user_id) {
     User.findById({ _id: user_id }, (err, user) => {
-      if (user["role"] == "user") {
+      if (user["role"] == "user" && user["status"] === "active") {
         saveFeedback(user, req, resp);
       } else {
         UserController.redirectToLogin(req, resp, next);
@@ -29,7 +29,7 @@ exports.editUserFeedback = function (req, resp, next) {
           error: { status: 404 },
           message: "Not found",
         });
-      } else if (user["role"] == "user") {
+      } else if (user["role"] == "user" && user["status"] === "active") {
         editFeedback(user, req, resp);
       } else {
         resp.status(403);
@@ -55,7 +55,7 @@ exports.getUserFeedbacks = function (req, resp, next) {
           error: { status: 404 },
           message: "Not found",
         });
-      } else if (user["role"] == "user") {
+      } else if (user["role"] == "user" && user["status"] === "active") {
         req.session.username = user["firstName"] + " " + user["lastName"];
         getFeedbacks(req, resp, next);
       } else {
