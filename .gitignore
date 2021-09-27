@@ -1,1 +1,4 @@
 /public/files
+/sessions
+/node_modules
+/uploads

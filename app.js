@@ -5,12 +5,12 @@ const session = require("express-session");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-var validator = require("express-validator");
 
 var indexRouter = require("./routes/index");
+var fileRouter = require("./routes/files");
+var helmet = require("helmet");
 
 var app = express();
-var helmet = require("helmet");
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -20,14 +20,37 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
+app.use(helmet.referrerPolicy({ policy: "same-origin" }));
+app.use(
+  helmet.contentSecurityPolicy({
+    useDefaults: true,
+    directives: {
+      "script-src": [
+        "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js",
+        "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js",
+        "https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js",
+        "'unsafe-inline'",
+      ],
+      "script-src-attr": ["'unsafe-inline'"],
+    },
+  })
+);
 const { v4: uuidv4 } = require("uuid");
 
-const SESS_TIME = 2 * 60 * 60 * 1000;
+const SESS_TIME = 2 * 60 * 60 * 1000; // 2hrs
+
+var FileStore = require("session-file-store")(session);
+
+var fileStoreOptions = {
+  path: path.resolve(__dirname) + "/sessions",
+  ttl: 86400,
+  retries: 0,
+};
 
 app.use(
   session({
     name: "sid",
+    store: new FileStore(fileStoreOptions),
     resave: false,
     saveUninitialized: true,
     rolling: true,
@@ -36,13 +59,12 @@ app.use(
       // uses httponly by default
       maxAge: SESS_TIME,
       sameSite: true,
-      secure: false,
+      secure: true, // make true on production to use ssl
     },
   })
 );
 
 app.use(express.static(path.join(__dirname, "public")));
-// app.use(helmet());
 app.disable("x-powered-by");
 
 var dbConnect = require("./config/connectDb");
@@ -57,6 +79,8 @@ dbConnect.once("open", () => {
 });
 
 app.use("/", indexRouter);
+
+app.use("/files", fileRouter);
 
 app.use(function (req, res, next) {
   next(createError(404));

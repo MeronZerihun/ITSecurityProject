@@ -9,7 +9,11 @@ let userSchema = new Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, required: true, default: "user" },
-    status: { type: String, default: "activated" },
+    status: { type: String, default: "active" },
+    honeyPot: { type: Number, default: 0 },
+    mother: { type: String, required: true },
+    teacher: { type: String, required: true },
+    roleModel: { type: String, required: true },
   },
   {
     timestamps: { createdAt: "created_at", modifiedAt: "modified_at" },

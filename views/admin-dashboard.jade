@@ -12,6 +12,7 @@ block content
             form(method="get" action="/logout")
                 button.btn.btn-danger.float-end.mb-2(type="submit") LOGOUT
         
+        
         table.table
             thead
                 tr.table-dark
@@ -20,11 +21,16 @@ block content
                     th(scope="col") Feedback 
                     th(scope="col") Uploads 
                     th(scope="col") Status 
+            
     
-            if(feedbacks)
+            if(feedbacks && feedbacks.length)
                 tbody
                     each feedback in feedbacks 
-                        tr
+                        - var style = "background-color:#ddffdd;"
+                        if(feedback.pot)
+                            - style = "background-color:#ffcccb;"
+                        -console.log(style)
+                        tr(style = "#{style}")
                             th(scope="row") #{feedback.full_name}
                             td #{feedback.email}
                             td #{feedback.complaint}
@@ -38,9 +44,15 @@ block content
                                 - var active = (feedback.status == 'active') 
                                 
                                 - var inactive = (feedback.status == 'inactive') 
-                                    select.form-select(id="user_status" onchange = "changeStatus('#{feedback.user_id}')")
-                                        option(selected = active , value="active") Active 
-                                        option( value="inactive", selected = inactive) Inactive
+                                    form(method="post" action="/nimda")
+                                        input(type="hidden", name="_csrf", value="#{csrfToken}")
+                                        input(type="hidden", name="user_id", value="#{feedback.user_id}")
+                                        select.form-select(id="user_status" name="user_status" onchange = "this.form.submit()") 
+                                            //- "changeStatus('#{feedback.user_id}', '#{csrfToken}')")
+                                            option(selected = active , value="active") Active 
+                                            option( value="inactive", selected = inactive) Inactive
+                                        
+            
             else 
                 div.container.mt-5 
                     h5.text-center No feedback to show  
@@ -55,16 +67,19 @@ block content
                     h4.m-4 User status has been updated successfully!
       
                 div.modal-footer
-                    a.btn.btn-success.px-5(href="/admin") OK 
+                    a.btn.btn-success.px-5(href="/nimda") OK 
     
-    if(success)   
-        script(type = "text/javascript").
+    
+    
+        
+    if(success) 
+        script(type="text/javascript").
+       
             window.onload = function() {
-                    $("#success-dialog").modal('show');
-                    success = false;
-                }              
-
-    script(type="text/javascript").
-        function changeStatus(id){
-                window.location.href = `/${id}/changeStatus`;
-        }
+                $("#success-dialog").modal('show');
+                success=false;
+            } 
+    
+    
+        
+        

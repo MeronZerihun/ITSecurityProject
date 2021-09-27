@@ -3,10 +3,10 @@ extends layout
 block content
 
     div.m-4.d-flex.justify-content-center
-        form.p-5.rounded.shadow(action="/signup", method="post", autocomplete="off" style="background-color: #ddddff")
-            div(style = "width: 100%; border: 3px solid #6a6ed3; border-top: none; border-right: none; border-left: none;")
-                h1.text-center.p-2 AACR - Feedback Site
-                h3.text-center.fs-2 SIGN UP
+        form.p-5.pt-4.rounded.shadow(action="/confirm", method="post", autocomplete="off" style="background-color: #ddddff")
+            div(style = "width: 100%; border: 3px solid #6a6ed3; border-right: none; border-left: none;")
+                h1.text-center.p-1 AACR - Feedback Site
+                h3.text-center.fs-2 User Confirmation
                 
             br
             br
@@ -14,13 +14,13 @@ block content
 
             if(typeof(error)!=='undefined')
                 div.alert.alert-danger(role="alert")
-                    p.m-2.fw-bolder.fs-5 Sign up failed!
+                    p.m-2.fw-bolder.fs-5 Confirmation failed!
                     ul
                         li #{error} 
             
             if(typeof(errors)!=='undefined')
                 div.alert.alert-danger(role="alert")
-                    p.m-2.fw-bolder.fs-5 Sign up failed!
+                    p.m-2.fw-bolder.fs-5 Confirmation failed!
                     ul
                         for each in errors
                             li #{each.msg}
@@ -38,27 +38,6 @@ block content
                                autocomplete="off",
                                required="true",
                                placeholder="Last Name")
-            br
-            label Email
-            input.form-control(type="email", 
-                               name="email", 
-                               autocomplete="off",
-                               required="true",
-                               placeholder="Email")
-            br
-            label Password 
-            input.form-control(type="password", 
-                               name="p_password", 
-                               autocomplete="off",
-                               required="true",
-                               placeholder="Password")
-            br
-            label Confirm Password 
-            input.form-control(type="password", 
-                               name="re_password", 
-                               autocomplete="off",
-                               required="true",
-                               placeholder="Confirm Password")
             br
             hr
             h6.text-center.fs-3 Security Questions 
@@ -86,7 +65,7 @@ block content
             br
             input(type="hidden", name="_csrf", value="#{csrfToken}")
             div.d-grid.mx-auto
-                button.btn.btn-primary(type="submit") SIGN UP
+                button.btn.btn-primary(type="submit") SUBMIT
        
             div.text-center.p-3
                 a.text-center(href="/login") Already have an account?

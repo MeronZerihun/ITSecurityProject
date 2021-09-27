@@ -4,7 +4,9 @@ block content
 
 
     div.m-4.d-flex.justify-content-center
-        form.p-5.rounded.shadow(method="post", action="/login", autocomplete="off")
+        
+        - var action = typeof(redirect)!=='undefined' ? `/login?redirect=${redirect}` : "/login"
+        form.p-5.rounded.shadow(method="post", action=`${action}`, autocomplete="off" style="background-color: #ddddff")
             div
                 h2.text-center.p-2 AACR - Feedback Site
             h3.text-center.display-6 LOGIN
@@ -38,8 +40,11 @@ block content
                                required="true",
                                placeholder="Password")
             br
+            input(type="hidden", name="_csrf", value="#{csrfToken}")
             div.d-grid.mx-auto
                 button.btn.btn-primary(type="submit") LOGIN
        
             div.text-center.p-3
                 a.text-center(href="/signup") Create an account
+            div.text-center
+                a.text-center(href="/confirm") Forgot Password?

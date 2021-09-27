@@ -12,9 +12,12 @@ block content
             div.collapse.navbar-collapse.justify-content-center(id="navbarText")
                 ul.navbar-nav.mb-2.mb-lg-0
                     li.nav-item
-                        a.nav-link.active(aria-current="page" href="/") Home
+                        a.nav-link.fw-bolder(href="/") Home
                     li.nav-item
                         a.nav-link.fw-bolder(href="/feedback") Submit a feedback
+                    li.nav-item
+                        a.nav-link.fw-bolder(href="/reset") Reset Password
+                    
                     
             a.btn.btn-danger.d-flex(href="/logout") Logout
     
@@ -31,7 +34,7 @@ block content
 
         - const id = feedback ? feedback._id: ' '
 
-        form.mt-5.p-5.rounded.shadow(method="post" action='/#{id}/edit' autocomplete="off" enctype="multipart/form-data")
+        form.mt-5.p-5.rounded.shadow(method="post" action='/#{id}/edit' autocomplete="off" enctype="multipart/form-data" style="background-color: #ddffdd")
             h6 Please submit your feedback below: 
             br
             
@@ -51,7 +54,7 @@ block content
             input.form-control.mt-3(type="file", id="file",
                                name="file", accept="application/pdf") 
             br
-
+            input(type="hidden", name="_csrf", value="#{csrfToken}")
             div.text-center.d-grid.gap-2.col-2.mx-auto
                 button.btn.btn-success(type="submit") SUBMIT
             
@@ -69,7 +72,7 @@ block content
                     a.btn.btn-success.px-5(href="/dashboard") OK 
     
     if(success)   
-        script(type = "text/javascript").
+        script(type = "text/javascript" nonce="r@nd0m").
             window.onload = function() {
                     $("#success-dialog").modal('show');
                     success = false;
