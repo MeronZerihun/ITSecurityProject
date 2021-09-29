@@ -25,22 +25,23 @@ block content
         div.container.mt-5.mb-5   
             each feedback in feedbacks  
                 - c_feedback = feedback._id 
-                div.card.mt-3(style="width: 100%; background-color: #c6e7fb" onclick = "edit('#{feedback._id}')")
-                    div.card-body 
-                        div.row
-                            div.col-10
-                                h5.card-title #{feedback.complaint}
-                                div.card-text 
-                                    p #{feedback.created_at}
-                            if(feedback.file_lnk)
-                                div.col
-                                    a.btn.btn-outline-success.px-3(href = '#{feedback.file_lnk}') View PDF
-        
+                 a(href='/#{feedback._id}/edit', style="text-decoration: none; color: black;")
+                    div.card.mt-3(style="width: 100%; background-color: #c6e7fb"  id="myCard") 
+                        div.card-body 
+                            div.row
+                                div.col-10
+                                    h5.card-title #{feedback.complaint}
+                                    div.card-text 
+                                        p #{feedback.created_at}
+                                if(feedback.file_lnk)
+                                    div.col
+                                        a.btn.btn-outline-success.px-3(href = '#{feedback.file_lnk}') View PDF
+            
     else 
         div.container.mt-5 
             h5.text-center.fs-3 No feedbacks to show
 
-    script(type="text/javascript" nonce="r@nd0m").
+    script(type="text/javascript" nonce="5726c7f26c").
         function edit(id){
                 //- alert(id);
                 window.location.href = `/${id}/edit`;

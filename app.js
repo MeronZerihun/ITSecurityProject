@@ -29,9 +29,21 @@ app.use(
         "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js",
         "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js",
         "https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js",
-        "'unsafe-inline'",
+        "'nonce-2726c7f26c'",
+        "'nonce-3726c7f26c'",
+        "'nonce-4726c7f26c'",
+        "'nonce-5726c7f26c'",
+        "'nonce-6726c7f26c'",
+        "'nonce-7726c7f26c'",
       ],
-      "script-src-attr": ["'unsafe-inline'"],
+      "script-src-attr": [
+        "'nonce-2726c7f26c'",
+        "'nonce-3726c7f26c'",
+        "'nonce-4726c7f26c'",
+        "'nonce-5726c7f26c'",
+        "'nonce-6726c7f26c'",
+        "'nonce-7726c7f26c'",
+      ],
     },
   })
 );

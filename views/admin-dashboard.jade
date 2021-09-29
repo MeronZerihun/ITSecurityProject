@@ -29,7 +29,6 @@ block content
                         - var style = "background-color:#ddffdd;"
                         if(feedback.pot)
                             - style = "background-color:#ffcccb;"
-                        -console.log(style)
                         tr(style = "#{style}")
                             th(scope="row") #{feedback.full_name}
                             td #{feedback.email}
@@ -47,7 +46,7 @@ block content
                                     form(method="post" action="/nimda")
                                         input(type="hidden", name="_csrf", value="#{csrfToken}")
                                         input(type="hidden", name="user_id", value="#{feedback.user_id}")
-                                        select.form-select(id="user_status" name="user_status" onchange = "this.form.submit()") 
+                                        select.form-select(id="user_status" name="user_status") 
                                             //- "changeStatus('#{feedback.user_id}', '#{csrfToken}')")
                                             option(selected = active , value="active") Active 
                                             option( value="inactive", selected = inactive) Inactive
@@ -70,10 +69,15 @@ block content
                     a.btn.btn-success.px-5(href="/nimda") OK 
     
     
-    
+    script(type="text/javascript" nonce="7726c7f26c").
+        $('#user_status').change(function(){
+            console.log('change triggered');
+            $(this).closest('form').submit();
+        });
+
         
     if(success) 
-        script(type="text/javascript").
+        script(type="text/javascript" nonce="4726c7f26c").
        
             window.onload = function() {
                 $("#success-dialog").modal('show');
